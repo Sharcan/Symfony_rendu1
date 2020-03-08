@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mettre à jour son profil{% endblock %}
+
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="card text-center" style="width: 100%;">
+                <div class="card-header">
+
+                    <h2 class="card-title">
+                        {{user.lastname}} {{user.firstname}}
+                    </h2>
+                    
+                </div>
+                <div class="card-body">
+                    <b>email:</b> {{user.email}}<br/>
+                    <b>enregistré le :</b> {{user.createdAt | date('d/m/Y')}}
+                </div>
+
+                <div class="card-footer">
+                    <h2>Tâches :</h2>
+
+                    {% if tasks == [] %}
+                        <b>{{user.firstname}} ne possède aucune tâche</b>
+                    {% endif %}
+
+                    {% for task in tasks %}
+                    <div class="card">
+
+                        <h3 class="card-title"> {{task.name}} </h3>
+                        {% if task.state %}
+                        <b class="text-success">TERMINE</b>
+                        {% endif %}
+                        {% if task.state == false %}
+                            <b class="text-danger">PAS TERMINE</b>
+                        {% endif %}
+                        <b>à faire avant le :</b> {{task.deadline | date('d/m/Y')}}<br/>
+                        <a href="{{path('updateTask', {id: task.id})}}"><button class="btn btn-warning">Modifier la tâche</button></a>
+                        <a href="{{path('removeTask', {id: task.id})}}"><button class="btn btn-danger">Supprimer la tâche</button></a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5"> 
+        <h1>Mettre à jour son profil</h1>  
+        {{form_start(updateUserFormulaire)}}
+        {{form_row(updateUserFormulaire.lastname)}}
+        {{form_row(updateUserFormulaire.firstname)}}
+        {{form_row(updateUserFormulaire.email)}}
+        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+        {{form_end(updateUserFormulaire)}}
+    </div>
+
+{% endblock %}

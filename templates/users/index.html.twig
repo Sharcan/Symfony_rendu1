@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+
+
+    <div class="container">
+    <h1>Liste des utilisateurs</h1>
+        <div class="row">
+            
+            {% if userRepository == [] %}
+                <p>Pas d'utilisateur present dans la base de donnée</p>
+            {% endif %}
+
+            {% for user in userRepository %}
+            <div class="card text-center" style="width: 100%;">
+                <div class="card-header">
+
+                    <h2 class="card-title">
+                        {{user.lastname}} {{user.firstname}}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <b>email:</b> {{user.email}}<br/>
+                    <b>enregistré le :</b> {{user.createdAt | date('d/m/Y')}}
+                </div>
+             <a href="{{path('updateUser', {id: user.id})}}"><button class="btn btn-warning">Modifier</button></a>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="container mt-5"> 
+        <h1>Formulaire utilisateur</h1>  
+        {{form_start(userFormulaire)}}
+        {{form_row(userFormulaire.lastname)}}
+        {{form_row(userFormulaire.firstname)}}
+        {{form_row(userFormulaire.email)}}
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+        {{form_end(userFormulaire)}}
+    </div>
+
+{% endblock %}
